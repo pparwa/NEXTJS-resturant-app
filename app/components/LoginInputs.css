@@ -1,0 +1,43 @@
+.login-box{
+    width: 100%;
+    padding: 1rem 2rem;
+
+}
+.login-box input{
+    outline: none;
+    border: 2px solid black;
+    padding: 0.6rem 0;
+
+}
+.login-box .name-box{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 0.3rem;
+ 
+
+}
+.login-box .name-box input{
+   width: 100%;
+}
+.login-box .email-box{
+    width: 100%;
+    margin-bottom: 0.3rem;
+}
+.login-box .email-box input{
+    width: 100%;
+}
+.button-container {
+    width: 100%;
+}
+.button-container button{
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: rgb(186, 38, 38);
+    color: #fff;
+    padding: 1rem 2rem;
+    text-align: center;
+}

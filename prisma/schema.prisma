@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Review {
+  id           Int       @id @default(autoincrement())
+  first_name   String
+  last_name    String
+  text         String
+  rating       Float
+  resturant_id Int
+  resturant    Resturant @relation(fields: [resturant_id], references: [id])
+  user_id      Int
+  user         User      @relation(fields: [user_id], references: [id])
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  first_name String
+  last_name  String
+  city       String
+  email      String @unique
+  phone      String
+  password    String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  reviews    Review[]
+}
+
+model Resturant {
+  id          Int      @id @default(autoincrement())
+  name        String
+  main_image  String
+  images      String[]
+  description String
+  open_time   String
+  close_time  String
+  items       Item[]
+  slug        String   @unique
+  price       PRICE
+  location_id Int
+  bookings    Booking[]
+  tabels      Tabel[]
+  location    Location @relation(fields: [location_id], references: [id])
+  cusins_id   Int
+  cusins      Cusins   @relation(fields: [cusins_id], references: [id])
+  closed_at   DateTime @default(now())
+  open_at     DateTime @updatedAt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  reviews     Review[]
+}
+
+model Item {
+  id           Int       @id @default(autoincrement())
+  name         String
+  description  String
+  price        String
+  resturant_id Int
+  resturant    Resturant @relation(fields: [resturant_id], references: [id])
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+enum PRICE {
+  CHEAP
+  REGULAR
+  EXPENSIVE
+}
+
+model Location {
+  id         Int         @id @default(autoincrement())
+  name       String
+  returant   Resturant[]
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+}
+
+model Cusins {
+  id         Int         @id @default(autoincrement())
+  name       String
+  returant   Resturant[]
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+}
+model Booking {
+  id Int @id @default(autoincrement())
+  number_of_peopel Int
+  booking_time DateTime
+  booker_email String
+  booker_phone String
+  booker_first_name String
+  booker_last_name String
+  booker_ocasion String?
+  booker_request String?
+  resturant_id Int
+
+  resturant Resturant @relation(fields: [resturant_id],references: [id])
+  tabels BookingOnTabels[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+model Tabel {
+  id Int @id @default(autoincrement())
+  seats Int
+  resturant_id  Int
+ 
+  resturant Resturant @relation(fields: [resturant_id],references: [id])
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  booking BookingOnTabels[]
+}
+model BookingOnTabels {
+  booking_id Int
+  booking Booking @relation(fields: [booking_id],references: [id])
+  tabel_id Int
+  tabel Tabel @relation(fields: [tabel_id],references: [id])
+    created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  @@id([booking_id ,tabel_id])
+
+}
+
